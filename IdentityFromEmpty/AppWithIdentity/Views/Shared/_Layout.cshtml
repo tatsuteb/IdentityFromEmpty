@@ -1,0 +1,23 @@
+﻿<header>
+    <nav>
+        <h1>サンプル</h1>
+
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="ProtectedView">ProtectedView</a>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span>@Context.User.Identity.Name</span>
+            <a asp-controller="Account" asp-action="Logout">ログアウト</a>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login">ログイン</a>
+            <a asp-controller="Account" asp-action="Register">新規登録</a>
+        }
+    </nav>
+</header>
+
+<main>
+    @RenderBody()
+</main>

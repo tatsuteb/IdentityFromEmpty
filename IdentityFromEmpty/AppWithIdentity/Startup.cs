@@ -43,6 +43,14 @@ namespace AppWithIdentity
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
+            // ログイン画面等のパスを変えたい場合はここで指定できる
+            // services.ConfigureApplicationCookie(config =>
+            // {
+            //     config.LoginPath = "/Login";
+            //     config.LogoutPath = "/Logout";
+            //     config.AccessDeniedPath = "/AccessDenied";
+            // });
+
             services.AddControllersWithViews();
         }
 

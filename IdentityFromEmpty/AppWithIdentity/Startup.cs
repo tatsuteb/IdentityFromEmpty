@@ -1,6 +1,7 @@
 using AppWithIdentity.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,10 +10,38 @@ namespace AppWithIdentity
 {
     public class Startup
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public Startup(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("identityDb"));
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    // デモ用に制約を緩めに設定
+                    if (_environment.IsDevelopment())
+                    {
+                        options.User.RequireUniqueEmail = true;
+
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                    }
+
+                    // その他いろいろ設定できる
+                    // options.SignIn.RequireConfirmedAccount = true;
+                    // options.SignIn.RequireConfirmedEmail = true;
+                    // options.SignIn.RequireConfirmedPhoneNumber = true;
+                })
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.AddControllersWithViews();
         }
@@ -26,6 +55,7 @@ namespace AppWithIdentity
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

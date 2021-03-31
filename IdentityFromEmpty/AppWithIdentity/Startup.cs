@@ -1,5 +1,7 @@
+using AppWithIdentity.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,6 +11,9 @@ namespace AppWithIdentity
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseInMemoryDatabase("identityDb"));
+
             services.AddControllersWithViews();
         }
 

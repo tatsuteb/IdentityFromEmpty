@@ -5,9 +5,10 @@
     var userName = UserManager.GetUserName(User) ?? "";
 }
 
-@if(SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User))
 {
     <span>@userName</span>
+    <a asp-controller="Account" asp-action="Logout">ログアウト</a>
 }
 else
 {

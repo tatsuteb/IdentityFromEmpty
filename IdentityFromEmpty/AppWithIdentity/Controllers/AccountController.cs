@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppWithIdentity.Models.Account;
+﻿using AppWithIdentity.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.Threading.Tasks;
 
 namespace AppWithIdentity.Controllers
 {
@@ -13,6 +11,7 @@ namespace AppWithIdentity.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+
         public AccountController(
             SignInManager<IdentityUser> signInManager, 
             UserManager<IdentityUser> userManager)
@@ -20,6 +19,7 @@ namespace AppWithIdentity.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
+
 
         #region 新規登録
 
@@ -146,6 +146,18 @@ namespace AppWithIdentity.Controllers
 
                 return View(model);
             }
+        }
+
+        #endregion
+
+
+        #region ログアウト
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction(actionName: "Index", controllerName: "Home");
         }
 
         #endregion

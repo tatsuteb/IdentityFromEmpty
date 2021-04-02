@@ -1,1 +1,16 @@
-﻿<a asp-controller="Account" asp-action="Login">ログイン</a>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    var userName = UserManager.GetUserName(User) ?? "";
+}
+
+@if(SignInManager.IsSignedIn(User))
+{
+    <span>@userName</span>
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login">ログイン</a>
+    <a asp-controller="Account" asp-action="Register">新規登録</a>
+}
